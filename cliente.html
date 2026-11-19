@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Veterinaria Guau Guau - Registro de cliente</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap">
+  <style>
+:root {
+  --green-950: #1d3314;
+  --green-900: #2c4a1f;
+  --green-700: #4a7a2a;
+  --green-600: #5b8f35;
+  --green-500: #7f9b45;
+  --green-200: #d3e4b0;
+  --green-100: #ebf3da;
+  --green-50: #f6faed;
+  --sun: #f0a93b;
+  --sun-dark: #d48a1c;
+  --brown: #8a5a2b;
+  --text: #22301a;
+  --muted: #62734d;
+  --line: #dbe7c3;
+  --field: #e6f0d2;
+  --field-border: #a9c37a;
+  --shadow: 0 10px 30px -12px rgba(44, 74, 31, .35);
+}
+
+* { box-sizing: border-box; }
+
+html, body { min-height: 100%; }
+body {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background:
+    radial-gradient(1200px 500px at 85% -10%, #e3efc8 0%, rgba(227, 239, 200, 0) 60%),
+    linear-gradient(180deg, #f6faed 0%, #ecf3dc 100%);
+  font-family: "Nunito", "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif;
+  color: var(--text);
+  line-height: 1.45;
+}
+
+/* ---------- Encabezado ---------- */
+.site-header {
+  background: #fff;
+  border-bottom: 1px solid var(--line);
+  box-shadow: 0 8px 24px -16px rgba(44, 74, 31, .5);
+  position: relative;
+}
+.site-header::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; bottom: -1px;
+  height: 4px;
+  background: linear-gradient(90deg, var(--green-700), var(--sun));
+}
+.header-inner {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--green-900); }
+.logo { width: 46px; height: 46px; flex-shrink: 0; }
+.brand-name { font-size: 24px; font-weight: 800; letter-spacing: -.2px; }
+.nav { margin-left: auto; display: flex; gap: 6px; align-items: center; }
+.nav a {
+  color: var(--green-900);
+  font-size: 15px;
+  font-weight: 700;
+  text-decoration: none;
+  padding: 9px 16px;
+  border-radius: 999px;
+}
+.nav a:hover { background: var(--green-100); }
+.nav a#btn-logout { border: 1.5px solid var(--green-700); color: var(--green-700); margin-left: 6px; }
+.nav a#btn-logout:hover { background: var(--green-700); color: #fff; }
+
+/* ---------- Contenido ---------- */
+.content { flex: 1; width: 100%; max-width: 1080px; margin: 0 auto; padding: 32px 24px 44px; }
+
+.title {
+  margin: 0 0 22px;
+  font-size: 30px;
+  font-weight: 800;
+  color: var(--green-900);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.title::before {
+  content: "";
+  width: 8px;
+  height: 34px;
+  border-radius: 4px;
+  background: linear-gradient(180deg, var(--sun), var(--green-600));
+}
+
+.cols { display: flex; gap: 22px; align-items: stretch; }
+.col {
+  flex: 1;
+  min-width: 0;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 26px;
+  box-shadow: var(--shadow);
+}
+.col h2 {
+  font-size: 18px;
+  font-weight: 800;
+  margin: 0 0 20px;
+  padding-bottom: 12px;
+  color: var(--green-700);
+  border-bottom: 2px dashed var(--line);
+}
+
+.row { display: flex; align-items: center; margin-bottom: 16px; }
+.row label { width: 104px; font-size: 15px; font-weight: 700; flex-shrink: 0; color: var(--green-900); }
+.row input {
+  flex: 1;
+  min-width: 0;
+  height: 42px;
+  background: var(--field);
+  border: 1.5px solid var(--field-border);
+  border-radius: 10px;
+  padding: 6px 12px;
+  font-size: 15px;
+  font-family: inherit;
+  color: var(--text);
+  transition: border-color .15s, box-shadow .15s;
+}
+.row input::placeholder { color: #8da072; }
+.row input:focus { outline: none; border-color: var(--green-600); box-shadow: 0 0 0 4px rgba(91, 143, 53, .22); }
+
+.btn {
+  background: linear-gradient(180deg, var(--green-600), var(--green-700));
+  color: #fff;
+  border: 1px solid var(--green-900);
+  border-radius: 12px;
+  padding: 11px 26px;
+  font-size: 16px;
+  font-weight: 800;
+  font-family: inherit;
+  cursor: pointer;
+  box-shadow: 0 6px 14px -6px rgba(44, 74, 31, .6);
+  transition: transform .08s, filter .15s;
+}
+.btn:hover { filter: brightness(1.07); }
+.btn:active { transform: translateY(1px); }
+.btn:focus-visible { outline: 3px solid rgba(240, 169, 59, .7); outline-offset: 2px; }
+.btn-wide {
+  display: block;
+  width: 100%;
+  margin-bottom: 14px;
+  background: var(--green-100);
+  color: var(--green-900);
+  border: 1.5px solid var(--field-border);
+  box-shadow: none;
+  font-size: 15px;
+}
+.btn-wide:hover { background: var(--green-200); filter: none; }
+.actions { display: flex; justify-content: flex-end; gap: 12px; margin-top: 18px; }
+
+.listbox {
+  background: var(--green-50);
+  border: 1.5px solid var(--line);
+  border-radius: 14px;
+  min-height: 150px;
+  padding: 14px;
+}
+.listbox h3 { text-align: center; font-size: 15px; font-weight: 800; margin: 0 0 12px; color: var(--green-700); }
+.listbox ul { list-style: none; margin: 0; padding: 0 0 0 6px; }
+.listbox li { white-space: nowrap; margin-bottom: 8px; font-weight: 600; }
+.listbox li::before { content: "🐾 "; }
+
+.vtable { width: 100%; border-collapse: collapse; }
+.vtable th {
+  font-size: 8px;
+  color: #fff;
+  background: #8aa650;
+  border: 1px solid #b7c98a;
+  padding: 2px;
+}
+.vtable td {
+  font-size: 13px;
+  background: #fff;
+  border: 1px solid var(--line);
+  padding: 5px 8px;
+}
+
+/* ---------- Login ---------- */
+.login-page {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  max-width: 1080px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 40px 24px;
+  align-items: stretch;
+}
+.hero {
+  background:
+    radial-gradient(420px 320px at 100% 100%, rgba(240, 169, 59, .35), rgba(240, 169, 59, 0) 70%),
+    radial-gradient(320px 260px at 0% 0%, rgba(255, 255, 255, .14), rgba(255, 255, 255, 0) 70%),
+    linear-gradient(155deg, var(--green-600), var(--green-950));
+  color: #fff;
+  border-radius: 24px 0 0 24px;
+  padding: 52px 44px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  min-height: 560px;
+}
+.hero h1 { font-size: 40px; line-height: 1.1; margin: 0 0 16px; font-weight: 800; max-width: 380px; }
+.hero p { font-size: 18px; margin: 0 0 8px; color: #e4efd0; max-width: 360px; }
+.hero .hero-list { margin: 22px 0 0; padding: 0; list-style: none; font-size: 16px; font-weight: 700; }
+.hero .hero-list li { margin-bottom: 10px; display: flex; align-items: center; gap: 10px; }
+.hero .hero-list li::before {
+  content: "✓";
+  width: 24px; height: 24px; border-radius: 50%;
+  background: var(--sun); color: var(--green-950);
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 800;
+}
+.hero .hero-dog { position: absolute; right: -6px; bottom: -4px; width: 250px; height: 250px; }
+
+.login {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 0 24px 24px 0;
+  padding: 52px 44px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  box-shadow: var(--shadow);
+}
+.login h2 { margin: 0 0 6px; font-size: 26px; font-weight: 800; color: var(--green-900); }
+.login .sub { margin: 0 0 26px; color: var(--muted); font-size: 15px; }
+.login .row label { width: 124px; font-size: 16px; }
+.login .btn { display: block; width: 100%; margin: 8px 0 0; padding: 13px; font-size: 17px; }
+.social { margin-top: 24px; border-top: 1px solid var(--line); padding-top: 22px; display: flex; flex-direction: column; gap: 10px; }
+.social .btn {
+  width: 100%; margin: 0; padding: 11px; font-size: 14px; font-weight: 700;
+  background: #fff; color: #3b3b3b; border: 1.5px solid #cfd6c2; box-shadow: none;
+}
+.social .btn:hover { background: #f4f7ee; filter: none; }
+
+/* ---------- Detalles de campo propios ---------- */
+.field-white { background: #fff !important; }
+.row.shift { margin-left: 8px; }
+.row.overlap label { position: relative; z-index: 2; margin-right: -26px; width: 104px; }
+
+/* ---------- Mensajes ---------- */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(20, 35, 12, .55);
+  backdrop-filter: blur(2px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+  padding: 16px;
+}
+.modal {
+  background: #fff;
+  border-top: 6px solid var(--sun);
+  border-radius: 16px;
+  padding: 28px 30px 24px;
+  max-width: 460px;
+  width: 100%;
+  box-shadow: 0 24px 50px -10px rgba(0, 0, 0, .5);
+}
+.modal-msg { font-size: 18px; font-weight: 700; margin: 0 0 22px; }
+.modal .btn { display: block; margin-left: auto; font-size: 15px; padding: 9px 26px; }
+
+/* ---------- Listado de clientes ---------- */
+.tools { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; color: var(--muted); font-weight: 700; }
+.tools .btn { font-size: 13px; padding: 8px 16px; background: #fff; color: var(--green-900); border: 1.5px solid var(--field-border); box-shadow: none; }
+.tools .btn:hover { background: var(--green-100); filter: none; }
+#contenedor { background: #fff; border: 1px solid var(--line); border-radius: 18px; box-shadow: var(--shadow); overflow-x: visible; }
+.ctable { width: 100%; border-collapse: collapse; }
+.ctable th, .ctable td { border-bottom: 1px solid #e6efd3; padding: 14px 16px; text-align: left; white-space: nowrap; font-size: 15px; }
+.ctable th { background: var(--green-100); color: var(--green-900); font-weight: 800; }
+.ctable tbody tr:hover td { background: var(--green-50); }
+.ctable tbody tr:last-child td { border-bottom: none; }
+.empty { padding: 36px; text-align: center; color: var(--muted); font-weight: 700; }
+
+/* ---------- Pie ---------- */
+.site-footer { background: var(--green-950); color: #c6d6a8; font-size: 13px; margin-top: auto; }
+.footer-inner {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 18px 24px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 28px;
+  align-items: center;
+}
+.footer-inner strong { color: #fff; font-size: 14px; }
+.footer-inner .version { margin-left: auto; color: #94a874; }
+
+@media (max-width: 800px) {
+  .cols { flex-direction: column; }
+  .login-page { grid-template-columns: 1fr; padding: 16px 12px; }
+  .hero { border-radius: 20px 20px 0 0; padding: 30px 24px 150px; min-height: 0; }
+  .hero h1 { font-size: 30px; }
+  .hero .hero-dog { width: 150px; height: 150px; }
+  .login { border-radius: 0 0 20px 20px; padding: 30px 24px; }
+  .brand-name { font-size: 19px; }
+  .header-inner { flex-wrap: wrap; padding: 10px 14px; }
+  .content { padding: 20px 14px 32px; }
+  .footer-inner .version { margin-left: 0; }
+}
+
+/* ---------- Mascotas y ficha ---------- */
+a.btn { display: inline-block; text-decoration: none; }
+.ctable a { color: var(--green-700); font-weight: 800; text-decoration: none; }
+.ctable a:hover { text-decoration: underline; }
+.search {
+  height: 40px; width: 300px; max-width: 100%;
+  border: 1.5px solid var(--field-border); border-radius: 10px;
+  padding: 6px 14px; font-family: inherit; font-size: 15px; background: #fff; color: var(--text);
+}
+.search:focus { outline: none; border-color: var(--green-600); box-shadow: 0 0 0 4px rgba(91, 143, 53, .22); }
+.ficha { margin: 0; display: grid; grid-template-columns: 200px 1fr; row-gap: 14px; }
+.ficha dt { font-weight: 800; color: var(--green-900); }
+.ficha dd { margin: 0; word-break: break-word; }
+.vac { margin-top: 22px; }
+.vac .ctable { border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+.badge { display: inline-block; padding: 3px 14px; border-radius: 999px; font-size: 13px; font-weight: 800; }
+.badge-ok { background: #dff1c7; color: #2c5a12; }
+.badge-bad { background: #fbe1dc; color: #8a2a18; }
+.sin-datos { color: var(--muted); font-weight: 700; margin: 4px 0; }
+
+.ctable a.accion {
+  display: inline-block; padding: 5px 14px; border: 1.5px solid var(--green-700);
+  border-radius: 999px; font-size: 13px; color: var(--green-700);
+}
+.ctable a.accion:hover { background: var(--green-700); color: #fff; text-decoration: none; }
+
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="index.html" id="brand">
+        <svg class="logo" width="46" height="46" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="31" fill="#e8a33d"/><g fill="#2c4a1f"><ellipse cx="32" cy="42" rx="12" ry="9"/><ellipse cx="17" cy="29" rx="5" ry="7"/><ellipse cx="27" cy="20" rx="5" ry="7"/><ellipse cx="38" cy="20" rx="5" ry="7"/><ellipse cx="48" cy="29" rx="5" ry="7"/></g></svg>
+        <span class="brand-name">Veternaria Guau Guau</span>
+      </a>
+      <nav class="nav">
+        <a href="cliente.html">Nuevo cliente</a>
+        <a href="clientes.html">Clientes</a>
+        <a href="mascotas.html">Mascotas</a>
+        <a href="#" id="btn-logout">Cerrar sesión</a>
+      </nav>
+    </div>
+  </header>
+
+    <main class="content">
+      <h1 class="title">Registro de Nuevo Cliente</h1>
+
+      <div class="cols">
+        <section class="col">
+          <h2>Datos&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;personales</h2>
+          <div class="row">
+            <label>Nombre</label>
+            <input type="text" id="nombre" autocomplete="off">
+          </div>
+          <div class="row">
+            <label>Apellido</label>
+            <input type="text" id="apellido" class="field-white" autocomplete="off">
+          </div>
+          <div class="row">
+            <label>Mail</label>
+            <input type="text" id="mail" autocomplete="off">
+          </div>
+          <div class="row shift">
+            <label>Dirección</label>
+            <input type="text" id="direccion" autocomplete="off">
+          </div>
+        </section>
+
+        <section class="col">
+          <button class="btn btn-wide" id="btn-mascota">Ingresar mascota</button>
+          <div class="listbox">
+            <h3>Lista de mascotas</h3>
+            <ul id="lista-mascotas"></ul>
+          </div>
+          <div class="actions">
+            <button class="btn" id="btn-salvar">SALVAR</button>
+          </div>
+        </section>
+      </div>
+    </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span><strong>Veterinaria Guau Guau</strong></span>
+      <span>Av. de los Perros 100</span>
+      <span>Tel. (555) 123-4567</span>
+      <span>Lunes a sábado, de 9 a 19 h</span>
+      <span class="version">Versión 1.0.0 - build 001</span>
+    </div>
+  </footer>
+
+  <script>
+/* Veterinaria Guau Guau - lógica compartida (sitio de práctica con datos ficticios) */
+(function () {
+  var USER = 'veterinario';
+  var PASS = 'Guau2026';
+  var K = {
+    session: 'gg_session',
+    draft: 'gg_draft',
+    pet: 'gg_pet',
+    clientes: 'gg_clientes_v2'
+  };
+
+  // Almacenamiento resistente: usa localStorage/sessionStorage y, si el navegador
+  // los bloquea (por ejemplo al abrir archivos locales), un respaldo en window.name.
+  function wnRead() {
+    try { return JSON.parse(window.name || '{}') || {}; } catch (e) { return {}; }
+  }
+  function wnWrite(o) {
+    try { window.name = JSON.stringify(o); } catch (e) { /* sin respaldo */ }
+  }
+  function makeStore(kind) {
+    function real() { return kind === 'local' ? window.localStorage : window.sessionStorage; }
+    return {
+      getItem: function (k) {
+        try {
+          var v = real().getItem(k);
+          if (v !== null && v !== undefined) return v;
+        } catch (e) { /* bloqueado */ }
+        var o = wnRead(), key = kind + ':' + k;
+        return o[key] === undefined ? null : o[key];
+      },
+      setItem: function (k, v) {
+        try { real().setItem(k, v); } catch (e) { /* bloqueado */ }
+        var o = wnRead(); o[kind + ':' + k] = v; wnWrite(o);
+      },
+      removeItem: function (k) {
+        try { real().removeItem(k); } catch (e) { /* bloqueado */ }
+        var o = wnRead(); delete o[kind + ':' + k]; wnWrite(o);
+      }
+    };
+  }
+  var LS = makeStore('local');
+  var SS = makeStore('session');
+
+  function read(store, key, def) {
+    try {
+      var v = store.getItem(key);
+      return v ? JSON.parse(v) : def;
+    } catch (e) {
+      return def;
+    }
+  }
+  function write(store, key, val) {
+    try { store.setItem(key, JSON.stringify(val)); } catch (e) { /* sin almacenamiento */ }
+  }
+
+  var SEED = [
+    {
+      id: 1, nombre: 'Lucía', apellido: 'Fernández', mail: 'lucia.fernandez@example.com',
+      direccion: 'Calle Falsa 123',
+      mascotas: [{
+        nombre: 'Toby', fecha: '12/03/2020', especie: 'Perro',
+        vacunas: [
+          { nombre: 'Antirrábica', fecha: '10/05/2021', dosis: '1', vencimiento: '10/05/2022' },
+          { nombre: 'Quíntuple', fecha: '15/06/2023', dosis: '1', vencimiento: '15/06/2024' },
+          { nombre: 'Antirrábica (refuerzo)', fecha: '01/09/2026', dosis: '2', vencimiento: '01/01/2030' }
+        ]
+      }]
+    },
+    {
+      id: 2, nombre: 'Martín', apellido: 'Muñoz', mail: 'martin.munoz@example.com',
+      direccion: 'Av. Siempreviva 742',
+      mascotas: [
+        {
+          nombre: 'Luna', fecha: '05/12/2019', especie: 'Gato',
+          vacunas: [{ nombre: 'Triple felina', fecha: '10/09/2026', dosis: '1', vencimiento: '10/09/2027' }]
+        },
+        { nombre: 'Nube', fecha: '21/01/2022', especie: 'Gato', vacunas: [] }
+      ]
+    },
+    {
+      id: 3, nombre: 'Camila', apellido: 'Pérez', mail: 'camila.perez@example.com',
+      direccion: 'Pasaje Los Olivos 45', mascotas: []
+    }
+  ];
+
+  var GG = {
+    init: function () {
+      if (!LS.getItem(K.clientes)) write(LS, K.clientes, SEED);
+    },
+    checkLogin: function (u, p) {
+      return u === USER && p.toLowerCase() === PASS.toLowerCase();
+    },
+    login: function () {
+      write(SS, K.session, 1);
+      SS.removeItem(K.draft);
+      SS.removeItem(K.pet);
+    },
+    logout: function () {
+      SS.removeItem(K.session);
+      SS.removeItem(K.draft);
+      SS.removeItem(K.pet);
+      location.href = 'index.html';
+    },
+    requireSession: function () {
+      if (!read(SS, K.session, 0)) location.href = 'index.html';
+    },
+    getDraft: function () {
+      var d = read(SS, K.draft, null);
+      if (!d) d = {};
+      if (!d.cliente) d.cliente = {};
+      if (!d.mascotas) d.mascotas = [];
+      return d;
+    },
+    setDraft: function (d) { write(SS, K.draft, d); },
+    getPet: function () { return read(SS, K.pet, {}); },
+    setPet: function (p) { write(SS, K.pet, p); },
+    clearPet: function () { SS.removeItem(K.pet); },
+    getClientes: function () { return read(LS, K.clientes, []); },
+    setClientes: function (c) { write(LS, K.clientes, c); },
+    resetData: function () {
+      LS.removeItem(K.clientes);
+      SS.removeItem(K.draft);
+      SS.removeItem(K.pet);
+    },
+    parseDMY: function (s) {
+      var m = /^(\d{2})\/(\d{2})\/(\d{4})$/.exec(String(s).trim());
+      return m ? { d: +m[1], m: +m[2], y: +m[3] } : null;
+    },
+    isRealDate: function (o) {
+      var dt = new Date(o.y, o.m - 1, o.d);
+      return dt.getFullYear() === o.y && dt.getMonth() === o.m - 1 && dt.getDate() === o.d;
+    },
+    showModal: function (msg, cb) {
+      var ov = document.createElement('div');
+      ov.className = 'overlay';
+      ov.innerHTML = '<div class="modal"><p class="modal-msg"></p>' +
+        '<button class="btn" id="modal-cerrar">Cerrar</button></div>';
+      ov.querySelector('.modal-msg').textContent = msg;
+      document.body.appendChild(ov);
+      ov.querySelector('button').onclick = function () {
+        ov.remove();
+        if (cb) cb();
+      };
+    },
+    $: function (id) { return document.getElementById(id); }
+  };
+
+  window.GG = GG;
+})();
+
+  </script>
+  <script>
+    // Esta pantalla no verifica la sesión
+    GG.init();
+
+    var draft = GG.getDraft();
+    GG.$('nombre').value = draft.cliente.nombre || '';
+    GG.$('apellido').value = draft.cliente.apellido || '';
+    GG.$('mail').value = draft.cliente.mail || '';
+    renderMascotas();
+
+    function renderMascotas() {
+      var ul = GG.$('lista-mascotas');
+      ul.innerHTML = '';
+      GG.getDraft().mascotas.slice(0, 2).forEach(function (m) {
+        var li = document.createElement('li');
+        li.textContent = m.nombre;
+        ul.appendChild(li);
+      });
+    }
+
+    GG.$('btn-mascota').onclick = function () {
+      var d = GG.getDraft();
+      d.cliente = {
+        nombre: GG.$('nombre').value,
+        apellido: GG.$('apellido').value,
+        mail: GG.$('mail').value
+      };
+      GG.setDraft(d);
+      location.href = 'mascota.html';
+    };
+
+    GG.$('btn-salvar').onclick = function () {
+      var v = {
+        nombre: GG.$('nombre').value,
+        apellido: GG.$('apellido').value,
+        mail: GG.$('mail').value,
+        direccion: GG.$('direccion').value
+      };
+      if (v.nombre === '' || v.apellido === '' || v.mail === '' || v.direccion === '') {
+        GG.showModal('ERROR: Debe completar todos los campos para salvar.');
+        return;
+      }
+      var d = GG.getDraft();
+      var clientes = GG.getClientes();
+      clientes.push({
+        id: Date.now(),
+        nombre: v.nombre,
+        apellido: v.apellido,
+        mail: v.mail,
+        direccion: v.direccion,
+        mascotas: d.mascotas
+      });
+      GG.setClientes(clientes);
+
+      d.cliente = {};
+      d.mascotas = [];
+      GG.setDraft(d);
+      GG.clearPet();
+      renderMascotas();
+      GG.$('nombre').value = '';
+      GG.$('apellido').value = '';
+      GG.$('mail').value = '';
+      GG.$('direccion').value = '';
+      GG.showModal('Cliente guardado correctamente.');
+    };
+
+    GG.$('btn-logout').onclick = function (e) {
+      e.preventDefault();
+      GG.logout();
+    };
+  </script>
+</body>
+</html>
